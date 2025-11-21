@@ -48,7 +48,8 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         quantum: {
-          DEFAULT: "hsl(var(--quantum-glow))",
+          DEFAULT: "hsl(var(--quantum))",
+          glow: "hsl(var(--quantum-glow))",
           dark: "hsl(var(--quantum-dark))",
           surface: "hsl(var(--quantum-surface))",
           border: "hsl(var(--quantum-border))",

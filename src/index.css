@@ -39,6 +39,7 @@ All colors MUST be HSL.
     --radius: 0.75rem;
 
     /* Quantum theme custom colors */
+    --quantum: 174 71% 56%;
     --quantum-glow: 185 100% 55%;
     --quantum-dark: 220 25% 8%;
     --quantum-surface: 220 20% 12%;
