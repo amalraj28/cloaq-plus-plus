@@ -8,6 +8,7 @@ import { Lock, Unlock, Copy, Sparkles, Zap, Upload, ArrowDown, CheckCircle2 } fr
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { CircuitVisualizer } from "@/components/CircuitVisualizer";
 import { MeasurementChart } from "@/components/MeasurementChart";
+import { CloaQLogo } from "@/components/CloaQLogo";
 
 interface EncryptionResult {
   encryptedCircuit: string;
@@ -112,15 +113,9 @@ const Index = () => {
         {/* Header */}
         <div className="max-w-4xl mx-auto mb-12 text-center">
           <div className="animate-slide-up space-y-6">
-            <div className="flex items-center justify-center gap-3">
-              <Sparkles className="w-10 h-10 text-quantum animate-pulse-glow" />
-              <h1 className="text-6xl font-bold bg-gradient-to-r from-primary via-quantum to-accent bg-clip-text text-transparent">
-                Quantum Obfuscator
-              </h1>
-              <Sparkles className="w-10 h-10 text-quantum animate-pulse-glow" />
-            </div>
+            <CloaQLogo />
             <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
-              Encrypt quantum circuits with advanced obfuscation and visualize the entire process
+              Quantum encryption (Q) meets classical decryption (Cl) - Visualize and secure your quantum circuits
             </p>
           </div>
         </div>
