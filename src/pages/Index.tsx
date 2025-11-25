@@ -25,6 +25,12 @@ const Index = () => {
   const [inputMethod, setInputMethod] = useState<"text" | "file">("text");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
+  
+  // Direct decryption states
+  const [directMeasurements, setDirectMeasurements] = useState("");
+  const [directKey, setDirectKey] = useState("");
+  const [directDecryptedOutput, setDirectDecryptedOutput] = useState("");
+  const [isDirectDecrypting, setIsDirectDecrypting] = useState(false);
 
   // Simulated quantum encryption function
   const encryptCircuit = () => {
@@ -105,6 +111,27 @@ const Index = () => {
     toast.success(`${label} copied to clipboard`);
   };
 
+  // Direct decryption function
+  const handleDirectDecryption = () => {
+    if (!directMeasurements.trim() || !directKey.trim()) {
+      toast.error("Please enter both measurements and key");
+      return;
+    }
+
+    setIsDirectDecrypting(true);
+    
+    setTimeout(() => {
+      // Simulate decryption of measurements
+      const decrypted = `Corrected measurement output: ${directMeasurements.split('').reverse().join('')}`;
+      
+      setDirectDecryptedOutput(decrypted);
+      setIsDirectDecrypting(false);
+      toast.success("Measurements decrypted successfully!", {
+        description: "Output corrected using provided key"
+      });
+    }, 1500);
+  };
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       <ParticleBackground />
@@ -118,6 +145,78 @@ const Index = () => {
               Quantum encryption (Q) meets classical decryption (Cl) - Visualize and secure your quantum circuits
             </p>
           </div>
+        </div>
+
+        {/* Direct Decryption Section */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <Card className="p-6 bg-accent/10 backdrop-blur-sm border-accent space-y-4 animate-slide-up">
+            <div className="flex items-center gap-3 mb-2">
+              <Unlock className="w-6 h-6 text-accent" />
+              <h2 className="text-2xl font-bold text-foreground">Direct Decryption</h2>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Already have encrypted measurements from a previous session? Decrypt them directly here.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-accent">Encrypted Measurements</label>
+                <Textarea
+                  placeholder="Enter encrypted measurement outputs (e.g., 10110101)"
+                  value={directMeasurements}
+                  onChange={(e) => setDirectMeasurements(e.target.value)}
+                  className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-accent">Encryption Key</label>
+                <Textarea
+                  placeholder="Enter the encryption key"
+                  value={directKey}
+                  onChange={(e) => setDirectKey(e.target.value)}
+                  className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none"
+                />
+              </div>
+            </div>
+
+            <Button
+              onClick={handleDirectDecryption}
+              disabled={isDirectDecrypting}
+              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-6 text-lg glow-quantum-strong transition-all"
+            >
+              {isDirectDecrypting ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-accent-foreground mr-2" />
+                  Decrypting...
+                </>
+              ) : (
+                <>
+                  <Unlock className="w-5 h-5 mr-2" />
+                  Decrypt Measurements
+                </>
+              )}
+            </Button>
+
+            {directDecryptedOutput && (
+              <div className="space-y-2 animate-slide-up">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium text-accent">Corrected Output</label>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => copyToClipboard(directDecryptedOutput, "Corrected output")}
+                    className="text-accent hover:text-accent/80"
+                  >
+                    <Copy className="w-4 h-4" />
+                  </Button>
+                </div>
+                <div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-all">
+                  {directDecryptedOutput}
+                </div>
+              </div>
+            )}
+          </Card>
         </div>
 
         {/* Step Indicators */}
