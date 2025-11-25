@@ -5,22 +5,27 @@ export const CloaQLogo = () => {
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    const timers = [
-      setTimeout(() => setStage(1), 2000),  // Show full phrase
-      setTimeout(() => setStage(2), 4000),  // Rearrange to CloaQ
-    ];
-    return () => timers.forEach(clearTimeout);
+    const cycle = () => {
+      setStage(0);
+      setTimeout(() => setStage(1), 3000);  // Show full phrase for 3s
+      setTimeout(() => setStage(2), 5500);  // Start transition to CloaQ
+      setTimeout(() => setStage(0), 8500);  // Wait 2s then restart (8.5s total + 0.5s fade = 9s cycle)
+    };
+    
+    cycle();
+    const interval = setInterval(cycle, 9000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center min-h-[120px]">
       <AnimatePresence mode="wait">
         {stage === 0 && (
           <motion.div
             key="full-phrase"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={{ opacity: 0, transition: { duration: 1 } }}
             className="text-3xl md:text-4xl font-bold text-center space-y-2"
           >
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
@@ -75,13 +80,44 @@ export const CloaQLogo = () => {
             key="cloaq"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center justify-center gap-2"
+            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+            className="flex items-center justify-center gap-1"
           >
-            {/* Quantum Encryption "Q" */}
+            {/* Classical "Cl" */}
             <motion.div
-              initial={{ x: -100, y: -50 }}
+              initial={{ x: 100, y: 50 }}
               animate={{ x: 0, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-6xl font-bold text-primary"
+            >
+              Cl
+            </motion.div>
+
+            {/* Obfuscation "o" */}
+            <motion.div
+              initial={{ x: -50, y: 50 }}
+              animate={{ x: 0, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-5xl md:text-6xl font-bold text-accent"
+            >
+              o
+            </motion.div>
+
+            {/* Amendment "a" */}
+            <motion.div
+              initial={{ x: 50, y: -50 }}
+              animate={{ x: 0, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="text-5xl md:text-6xl font-bold text-primary"
+            >
+              a
+            </motion.div>
+
+            {/* Quantum "Q" with glow effect */}
+            <motion.div
+              initial={{ opacity: 0, x: -100, y: -50 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
               className="relative"
             >
               <div className="text-5xl md:text-6xl font-bold text-quantum glow-quantum-strong">
@@ -99,46 +135,6 @@ export const CloaQLogo = () => {
                   ease: "easeInOut",
                 }}
               />
-            </motion.div>
-
-            {/* Classical Decryption "Cl" */}
-            <motion.div
-              initial={{ x: 100, y: 50 }}
-              animate={{ x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-5xl md:text-6xl font-bold text-primary"
-            >
-              Cl
-            </motion.div>
-
-            {/* Obfuscation "o" */}
-            <motion.div
-              initial={{ x: -50, y: 50 }}
-              animate={{ x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-5xl md:text-6xl font-bold text-accent"
-            >
-              o
-            </motion.div>
-
-            {/* Amendment "a" */}
-            <motion.div
-              initial={{ x: 50, y: -50 }}
-              animate={{ x: 0, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-5xl md:text-6xl font-bold text-primary"
-            >
-              a
-            </motion.div>
-
-            {/* Final "Q" with special styling */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
-              className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-quantum via-accent to-primary bg-clip-text text-transparent"
-            >
-              Q
             </motion.div>
           </motion.div>
         )}
