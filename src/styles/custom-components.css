@@ -1,0 +1,220 @@
+/* Custom Components Styles */
+
+/* ParticleBackground */
+.particle-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+/* CircuitVisualizer */
+.circuit-visualizer {
+  padding: 1rem;
+  background-color: hsl(var(--quantum-surface));
+  border: 1px solid hsl(var(--quantum));
+}
+
+.circuit-visualizer-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--quantum));
+  margin-bottom: 0.75rem;
+}
+
+.circuit-canvas {
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: hsl(var(--background) / 0.5);
+  min-height: 300px;
+}
+
+/* MeasurementChart */
+.measurement-chart {
+  padding: 1rem;
+  border: 1px solid hsl(var(--quantum));
+}
+
+.measurement-chart-encrypted {
+  background-color: hsl(var(--quantum-surface));
+}
+
+.measurement-chart-decrypted {
+  background-color: hsl(var(--accent) / 0.1);
+}
+
+.measurement-chart-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--quantum));
+  margin-bottom: 1rem;
+}
+
+.measurement-bars {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 120px;
+}
+
+.measurement-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.measurement-bar {
+  width: 3rem;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  transition: all 0.5s;
+}
+
+.measurement-bar-1-encrypted {
+  background-color: hsl(var(--primary));
+}
+
+.measurement-bar-1-decrypted {
+  background-color: hsl(var(--accent));
+}
+
+.measurement-bar-0 {
+  background-color: hsl(var(--muted));
+}
+
+.measurement-bit {
+  font-size: 0.75rem;
+  font-family: 'Courier New', Courier, monospace;
+  color: hsl(var(--quantum));
+}
+
+.measurement-qubit {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* CloaQ Logo */
+.cloaq-logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+}
+
+.cloaq-background-text {
+  position: absolute;
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.cloaq-word-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 0.75rem;
+}
+
+.cloaq-word {
+  color: hsl(var(--foreground));
+}
+
+.cloaq-highlight-q {
+  color: hsl(var(--quantum));
+  font-size: 2.5rem;
+}
+
+.cloaq-highlight-o {
+  color: hsl(var(--accent));
+  font-size: 2.5rem;
+}
+
+.cloaq-highlight-cl {
+  color: hsl(var(--primary));
+  font-size: 2.5rem;
+}
+
+.cloaq-highlight-a {
+  color: hsl(var(--primary));
+  font-size: 2.5rem;
+}
+
+.cloaq-final-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.cloaq-letter {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.cloaq-letter-cl {
+  color: hsl(var(--primary));
+}
+
+.cloaq-letter-o {
+  color: hsl(var(--accent));
+}
+
+.cloaq-letter-a {
+  color: hsl(var(--primary));
+}
+
+.cloaq-letter-q {
+  position: relative;
+  color: hsl(var(--quantum));
+}
+
+.cloaq-pulse-dot {
+  position: absolute;
+  top: -0.25rem;
+  right: -0.25rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: hsl(var(--quantum));
+  border-radius: 9999px;
+}
+
+@media (min-width: 768px) {
+  .cloaq-background-text {
+    font-size: 2.25rem;
+  }
+  
+  .cloaq-highlight-q,
+  .cloaq-highlight-o,
+  .cloaq-highlight-cl,
+  .cloaq-highlight-a {
+    font-size: 3rem;
+  }
+  
+  .cloaq-letter {
+    font-size: 3.75rem;
+  }
+}
+
+/* NavLink */
+.nav-link {
+  text-decoration: none;
+  color: hsl(var(--foreground));
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: hsl(var(--primary));
+}
+
+.nav-link-active {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
