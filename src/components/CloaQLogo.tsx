@@ -18,7 +18,7 @@ export const CloaQLogo = () => {
   }, []);
 
   return (
-    <div className="relative flex items-center justify-center min-h-[120px]">
+    <div className="cloaq-logo-container">
       {/* Background text that stays visible during transition */}
       <motion.div
         animate={{ 
@@ -26,76 +26,80 @@ export const CloaQLogo = () => {
           filter: stage === 1 ? "blur(2px)" : "blur(0px)"
         }}
         transition={{ duration: 1 }}
-        className="absolute text-3xl md:text-4xl font-bold text-center space-y-2"
+        className="cloaq-background-text"
       >
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-          <span className="text-foreground">
-            <span className="text-transparent">Q</span>
+        <div className="cloaq-word-container">
+          <span className="cloaq-word">
+            <span style={{ color: 'transparent' }}>Q</span>
             uantum
           </span>
-          <span className="text-foreground">
-            <span className="text-transparent">O</span>
+          <span className="cloaq-word">
+            <span style={{ color: 'transparent' }}>O</span>
             bfuscation
           </span>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-          <span className="text-foreground">
-            <span className="text-transparent">Cl</span>
+        <div className="cloaq-word-container" style={{ marginTop: '0.5rem' }}>
+          <span className="cloaq-word">
+            <span style={{ color: 'transparent' }}>Cl</span>
             assical
           </span>
-          <span className="text-foreground">
-            <span className="text-transparent">A</span>
+          <span className="cloaq-word">
+            <span style={{ color: 'transparent' }}>A</span>
             mendment
           </span>
         </div>
       </motion.div>
 
       {/* Animated highlighted letters */}
-      <div className="relative">
+      <div style={{ position: 'relative' }}>
         {stage === 0 && (
-          <div className="text-3xl md:text-4xl font-bold text-center space-y-2">
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              <span className="text-foreground">
+          <div className="cloaq-background-text">
+            <div className="cloaq-word-container">
+              <span className="cloaq-word">
                 <motion.span
-                  className="text-quantum glow-quantum-strong text-4xl md:text-5xl inline-block"
+                  className="cloaq-highlight-q glow-quantum-strong"
+                  style={{ display: 'inline-block' }}
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 0.5, delay: 0.5 }}
                 >
                   Q
                 </motion.span>
-                <span className="invisible">uantum</span>
+                <span style={{ visibility: 'hidden' }}>uantum</span>
               </span>
-              <span className="text-foreground">
+              <span className="cloaq-word">
                 <motion.span
-                  className="text-accent text-4xl md:text-5xl inline-block"
+                  className="cloaq-highlight-o"
+                  style={{ display: 'inline-block' }}
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 0.5, delay: 0.8 }}
                 >
                   O
                 </motion.span>
-                <span className="invisible">bfuscation</span>
+                <span style={{ visibility: 'hidden' }}>bfuscation</span>
               </span>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              <span className="text-foreground">
+            <div className="cloaq-word-container" style={{ marginTop: '0.5rem' }}>
+              <span className="cloaq-word">
                 <motion.span
-                  className="text-primary text-4xl md:text-5xl inline-block"
+                  className="cloaq-highlight-cl"
+                  style={{ display: 'inline-block' }}
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 0.5, delay: 1.1 }}
                 >
                   Cl
                 </motion.span>
-                <span className="invisible">assical</span>
+                <span style={{ visibility: 'hidden' }}>assical</span>
               </span>
-              <span className="text-foreground">
+              <span className="cloaq-word">
                 <motion.span
-                  className="text-primary text-4xl md:text-5xl inline-block"
+                  className="cloaq-highlight-a"
+                  style={{ display: 'inline-block' }}
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 0.5, delay: 1.4 }}
                 >
                   A
                 </motion.span>
-                <span className="invisible">mendment</span>
+                <span style={{ visibility: 'hidden' }}>mendment</span>
               </span>
             </div>
           </div>
@@ -104,14 +108,14 @@ export const CloaQLogo = () => {
         {stage >= 1 && (
           <motion.div
             initial={false}
-            className="flex items-center justify-center gap-1"
+            className="cloaq-final-container"
           >
             {/* Classical "Cl" - moves from bottom right to CloaQ position */}
             <motion.div
               initial={stage === 1 ? { x: 0, y: 80 } : false}
               animate={{ x: 0, y: 0, opacity: 1 }}
               transition={{ duration: 1, ease: "easeInOut" }}
-              className="text-5xl md:text-6xl font-bold text-primary"
+              className="cloaq-letter cloaq-letter-cl"
             >
               Cl
             </motion.div>
@@ -121,7 +125,7 @@ export const CloaQLogo = () => {
               initial={stage === 1 ? { x: 120, y: -40 } : false}
               animate={{ x: 0, y: 0, opacity: 1 }}
               transition={{ duration: 1, ease: "easeInOut", delay: 0.1 }}
-              className="text-5xl md:text-6xl font-bold text-accent"
+              className="cloaq-letter cloaq-letter-o"
             >
               o
             </motion.div>
@@ -131,7 +135,7 @@ export const CloaQLogo = () => {
               initial={stage === 1 ? { x: 180, y: 80 } : false}
               animate={{ x: 0, y: 0, opacity: 1 }}
               transition={{ duration: 1, ease: "easeInOut", delay: 0.2 }}
-              className="text-5xl md:text-6xl font-bold text-primary"
+              className="cloaq-letter cloaq-letter-a"
             >
               a
             </motion.div>
@@ -141,13 +145,11 @@ export const CloaQLogo = () => {
               initial={stage === 1 ? { x: -180, y: -40 } : false}
               animate={{ x: 0, y: 0, opacity: 1 }}
               transition={{ duration: 1, ease: "easeInOut", delay: 0.3 }}
-              className="relative"
+              className="cloaq-letter cloaq-letter-q"
             >
-              <div className="text-5xl md:text-6xl font-bold text-quantum glow-quantum-strong">
-                Q
-              </div>
+              Q
               <motion.div
-                className="absolute -top-1 -right-1 w-3 h-3 bg-quantum rounded-full"
+                className="cloaq-pulse-dot"
                 animate={{
                   scale: [1, 1.5, 1],
                   opacity: [1, 0.5, 1],

@@ -1,0 +1,109 @@
+/* Base Styles and Design System Variables */
+
+:root {
+  --background: 220 25% 8%;
+  --foreground: 180 100% 95%;
+
+  --card: 220 20% 12%;
+  --card-foreground: 180 100% 95%;
+
+  --popover: 220 20% 10%;
+  --popover-foreground: 180 100% 95%;
+
+  --primary: 185 100% 55%;
+  --primary-foreground: 220 25% 8%;
+
+  --secondary: 210 50% 25%;
+  --secondary-foreground: 180 100% 95%;
+
+  --muted: 220 15% 20%;
+  --muted-foreground: 180 30% 65%;
+
+  --accent: 185 100% 45%;
+  --accent-foreground: 220 25% 8%;
+
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 180 100% 95%;
+
+  --border: 220 20% 18%;
+  --input: 220 20% 15%;
+  --ring: 185 100% 55%;
+
+  --radius: 0.75rem;
+
+  /* Quantum theme custom colors */
+  --quantum: 174 71% 56%;
+  --quantum-glow: 185 100% 55%;
+  --quantum-dark: 220 25% 8%;
+  --quantum-surface: 220 20% 12%;
+  --quantum-border: 185 100% 55%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-color: hsl(var(--border));
+}
+
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utility Classes */
+.glow-quantum {
+  box-shadow: 0 0 20px hsl(var(--quantum-glow) / 0.3),
+              0 0 40px hsl(var(--quantum-glow) / 0.1);
+}
+
+.glow-quantum-strong {
+  box-shadow: 0 0 30px hsl(var(--quantum-glow) / 0.5),
+              0 0 60px hsl(var(--quantum-glow) / 0.2);
+}
+
+/* Animations */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

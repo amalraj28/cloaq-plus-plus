@@ -4,11 +4,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Lock, Unlock, Copy, Sparkles, Zap, Upload, ArrowDown, CheckCircle2 } from "lucide-react";
+import { Lock, Unlock, Copy, Zap, Upload, ArrowDown, CheckCircle2 } from "lucide-react";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { CircuitVisualizer } from "@/components/CircuitVisualizer";
 import { MeasurementChart } from "@/components/MeasurementChart";
 import { CloaQLogo } from "@/components/CloaQLogo";
+import { cn } from "@/lib/utils";
 
 interface EncryptionResult {
   encryptedCircuit: string;
@@ -133,49 +134,49 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
+    <div className="index-page">
       <ParticleBackground />
       
-      <div className="relative z-10 p-6 pb-20">
+      <div className="index-page-content">
         {/* Header */}
-        <div className="max-w-4xl mx-auto mb-12 text-center">
-          <div className="animate-slide-up space-y-6">
+        <div className="index-header">
+          <div className="index-header-content">
             <CloaQLogo />
-            <p className="text-muted-foreground text-xl max-w-2xl mx-auto">
+            <p className="index-description">
               Quantum encryption (Q) meets classical decryption (Cl) - Visualize and secure your quantum circuits
             </p>
           </div>
         </div>
 
         {/* Direct Decryption Section */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <Card className="p-6 bg-accent/10 backdrop-blur-sm border-accent space-y-4 animate-slide-up">
-            <div className="flex items-center gap-3 mb-2">
-              <Unlock className="w-6 h-6 text-accent" />
-              <h2 className="text-2xl font-bold text-foreground">Direct Decryption</h2>
+        <div className="direct-decryption-section">
+          <Card className="direct-decryption-card animate-slide-up">
+            <div className="direct-decryption-header">
+              <Unlock className="direct-decryption-icon" />
+              <h2 className="direct-decryption-title">Direct Decryption</h2>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="direct-decryption-description">
               Already have encrypted measurements from a previous session? Decrypt them directly here.
             </p>
             
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-accent">Encrypted Measurements</label>
+            <div className="direct-decryption-form">
+              <div className="direct-decryption-field">
+                <label className="direct-decryption-label">Encrypted Measurements</label>
                 <Textarea
                   placeholder="Enter encrypted measurement outputs (e.g., 10110101)"
                   value={directMeasurements}
                   onChange={(e) => setDirectMeasurements(e.target.value)}
-                  className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none"
+                  className="direct-decryption-textarea glow-quantum"
                 />
               </div>
               
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-accent">Encryption Key</label>
+              <div className="direct-decryption-field">
+                <label className="direct-decryption-label">Encryption Key</label>
                 <Textarea
                   placeholder="Enter the encryption key"
                   value={directKey}
                   onChange={(e) => setDirectKey(e.target.value)}
-                  className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none"
+                  className="direct-decryption-textarea glow-quantum"
                 />
               </div>
             </div>
@@ -183,35 +184,35 @@ const Index = () => {
             <Button
               onClick={handleDirectDecryption}
               disabled={isDirectDecrypting}
-              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-6 text-lg glow-quantum-strong transition-all"
+              className="direct-decryption-button glow-quantum-strong"
             >
               {isDirectDecrypting ? (
                 <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-accent-foreground mr-2" />
+                  <div className="loading-spinner loading-spinner-accent" />
                   Decrypting...
                 </>
               ) : (
                 <>
-                  <Unlock className="w-5 h-5 mr-2" />
+                  <Unlock style={{ width: '1.25rem', height: '1.25rem', marginRight: '0.5rem' }} />
                   Decrypt Measurements
                 </>
               )}
             </Button>
 
             {directDecryptedOutput && (
-              <div className="space-y-2 animate-slide-up">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-accent">Corrected Output</label>
+              <div className="direct-decryption-output">
+                <div className="direct-decryption-output-header">
+                  <label className="direct-decryption-label">Corrected Output</label>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => copyToClipboard(directDecryptedOutput, "Corrected output")}
-                    className="text-accent hover:text-accent/80"
+                    className="copy-button"
                   >
-                    <Copy className="w-4 h-4" />
+                    <Copy style={{ width: '1rem', height: '1rem' }} />
                   </Button>
                 </div>
-                <div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-all">
+                <div className="direct-decryption-output-content glow-quantum-strong">
                   {directDecryptedOutput}
                 </div>
               </div>
@@ -220,91 +221,85 @@ const Index = () => {
         </div>
 
         {/* Step Indicators */}
-        <div className="max-w-4xl mx-auto mb-8">
-          <div className="flex items-center justify-center gap-4">
+        <div className="step-indicators">
+          <div className="step-indicators-container">
             {[1, 2, 3].map((step) => (
-              <div key={step} className="flex items-center">
-                <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all ${
-                  currentStep >= step 
-                    ? 'border-quantum bg-quantum/20 text-quantum glow-quantum' 
-                    : 'border-muted text-muted-foreground'
-                }`}>
+              <div key={step} className="step-indicator">
+                <div className={cn("step-circle", currentStep >= step && "step-circle-active glow-quantum")}>
                   {currentStep > step ? (
-                    <CheckCircle2 className="w-6 h-6" />
+                    <CheckCircle2 style={{ width: '1.5rem', height: '1.5rem' }} />
                   ) : (
-                    <span className="font-bold">{step}</span>
+                    <span>{step}</span>
                   )}
                 </div>
                 {step < 3 && (
-                  <ArrowDown className={`w-8 h-8 mx-4 rotate-[-90deg] transition-colors ${
-                    currentStep > step ? 'text-quantum' : 'text-muted-foreground'
-                  }`} />
+                  <ArrowDown className={cn("step-arrow", currentStep > step && "step-arrow-active")} />
                 )}
               </div>
             ))}
           </div>
-          <div className="flex justify-center gap-24 mt-4">
-            <span className={`text-sm font-medium ${currentStep >= 1 ? 'text-quantum' : 'text-muted-foreground'}`}>
+          <div className="step-labels">
+            <span className={cn("step-label", currentStep >= 1 && "step-label-active")}>
               Input
             </span>
-            <span className={`text-sm font-medium ${currentStep >= 2 ? 'text-quantum' : 'text-muted-foreground'}`}>
+            <span className={cn("step-label", currentStep >= 2 && "step-label-active")}>
               Encrypt
             </span>
-            <span className={`text-sm font-medium ${currentStep >= 3 ? 'text-quantum' : 'text-muted-foreground'}`}>
+            <span className={cn("step-label", currentStep >= 3 && "step-label-active")}>
               Decrypt
             </span>
           </div>
         </div>
 
         {/* Main Content - Vertical Flow */}
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="main-content">
           
           {/* Step 1: Input Section */}
-          <Card className="p-8 bg-quantum-surface/50 backdrop-blur-sm border-quantum glow-quantum space-y-6 animate-slide-up">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-quantum/20 flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-quantum" />
+          <Card className="step-card glow-quantum">
+            <div className="step-card-header">
+              <div className="step-card-title-container">
+                <div className="step-icon-container">
+                  <Zap className="step-icon" />
                 </div>
-                <h2 className="text-3xl font-bold text-foreground">Step 1: Input Circuit</h2>
+                <h2 className="step-title">Step 1: Input Circuit</h2>
               </div>
             </div>
 
             <Tabs value={inputMethod} onValueChange={(v) => setInputMethod(v as "text" | "file")}>
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList style={{ display: 'grid', width: '100%', gridTemplateColumns: 'repeat(2, 1fr)' }}>
                 <TabsTrigger value="text">QASM Text</TabsTrigger>
                 <TabsTrigger value="file">Upload File</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="text" className="space-y-4">
+              <TabsContent value="text" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <Textarea
                   placeholder="Enter your QASM quantum circuit (e.g., OPENQASM 2.0; include qelib1.inc; qreg q[2]; h q[0]; cx q[0],q[1];)"
                   value={circuitInput}
                   onChange={(e) => setCircuitInput(e.target.value)}
-                  className="min-h-[150px] bg-input border-quantum/50 focus:border-quantum focus:glow-quantum text-foreground font-mono resize-none"
+                  className="qasm-textarea glow-quantum"
                 />
               </TabsContent>
               
-              <TabsContent value="file" className="space-y-4">
+              <TabsContent value="file" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <input
                   type="file"
                   ref={fileInputRef}
                   accept=".qasm"
                   onChange={handleFileUpload}
-                  className="hidden"
+                  style={{ display: 'none' }}
                 />
                 <Button
                   onClick={() => fileInputRef.current?.click()}
                   variant="outline"
-                  className="w-full py-8 border-quantum hover:bg-quantum/10"
+                  className="upload-button"
                 >
-                  <Upload className="w-6 h-6 mr-2" />
+                  <Upload style={{ width: '1.5rem', height: '1.5rem', marginRight: '0.5rem' }} />
                   Upload QASM File
                 </Button>
                 {circuitInput && (
-                  <div className="p-4 bg-input rounded-lg border border-quantum/30">
-                    <p className="text-sm text-muted-foreground mb-2">Loaded circuit preview:</p>
-                    <pre className="text-xs font-mono text-foreground overflow-x-auto max-h-32">
+                  <div className="file-preview">
+                    <p className="file-preview-label">Loaded circuit preview:</p>
+                    <pre className="file-preview-content">
                       {circuitInput.slice(0, 200)}...
                     </pre>
                   </div>
@@ -321,16 +316,16 @@ const Index = () => {
             <Button
               onClick={encryptCircuit}
               disabled={isEncrypting}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-8 text-xl glow-quantum-strong transition-all"
+              className="encrypt-button glow-quantum-strong"
             >
               {isEncrypting ? (
                 <>
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-foreground mr-2" />
+                  <div className="loading-spinner loading-spinner-primary" />
                   Encrypting...
                 </>
               ) : (
                 <>
-                  <Lock className="w-6 h-6 mr-2" />
+                  <Lock style={{ width: '1.5rem', height: '1.5rem', marginRight: '0.5rem' }} />
                   Encrypt Circuit
                 </>
               )}
@@ -339,50 +334,52 @@ const Index = () => {
 
           {/* Step 2: Encryption Results */}
           {encryptionResult && (
-            <div className="space-y-6 animate-slide-up">
-              <div className="flex items-center justify-center">
-                <ArrowDown className="w-12 h-12 text-quantum animate-bounce" />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="animate-slide-up">
+              <div className="step-separator">
+                <ArrowDown className="step-separator-icon" />
               </div>
 
-              <Card className="p-8 bg-quantum-surface/50 backdrop-blur-sm border-quantum glow-quantum space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                    <Lock className="w-6 h-6 text-primary" />
+              <Card className="step-card glow-quantum">
+                <div className="step-card-header" style={{ marginBottom: '1.5rem' }}>
+                  <div className="step-card-title-container">
+                    <div className="step-icon-container">
+                      <Lock className="step-icon" />
+                    </div>
+                    <h2 className="step-title">Step 2: Encryption Results</h2>
                   </div>
-                  <h2 className="text-3xl font-bold text-foreground">Step 2: Encryption Results</h2>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium text-quantum">Encrypted Circuit</label>
+                <div className="encryption-results-grid">
+                  <div className="encryption-result-field">
+                    <div className="encryption-result-header">
+                      <label className="encryption-result-label">Encrypted Circuit</label>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(encryptionResult.encryptedCircuit, "Encrypted circuit")}
-                        className="text-quantum hover:text-quantum/80"
+                        className="copy-button"
                       >
-                        <Copy className="w-4 h-4" />
+                        <Copy style={{ width: '1rem', height: '1rem' }} />
                       </Button>
                     </div>
-                    <div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-all max-h-32 overflow-y-auto">
+                    <div className="encryption-result-content">
                       {encryptionResult.encryptedCircuit}
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium text-quantum">Encryption Key</label>
+                  <div className="encryption-result-field">
+                    <div className="encryption-result-header">
+                      <label className="encryption-result-label">Encryption Key</label>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => copyToClipboard(encryptionResult.key, "Encryption key")}
-                        className="text-quantum hover:text-quantum/80"
+                        className="copy-button"
                       >
-                        <Copy className="w-4 h-4" />
+                        <Copy style={{ width: '1rem', height: '1rem' }} />
                       </Button>
                     </div>
-                    <div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-all max-h-32 overflow-y-auto">
+                    <div className="encryption-result-content">
                       {encryptionResult.key}
                     </div>
                   </div>
@@ -397,16 +394,16 @@ const Index = () => {
                 <Button
                   onClick={decryptCircuit}
                   disabled={isDecrypting}
-                  className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-8 text-xl glow-quantum-strong transition-all"
+                  className="decrypt-button glow-quantum-strong"
                 >
                   {isDecrypting ? (
                     <>
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-accent-foreground mr-2" />
+                      <div className="loading-spinner loading-spinner-accent" />
                       Decrypting...
                     </>
                   ) : (
                     <>
-                      <Unlock className="w-6 h-6 mr-2" />
+                      <Unlock style={{ width: '1.5rem', height: '1.5rem', marginRight: '0.5rem' }} />
                       Decrypt Circuit
                     </>
                   )}
@@ -417,32 +414,35 @@ const Index = () => {
 
           {/* Step 3: Decryption Results */}
           {decryptedOutput && (
-            <div className="space-y-6 animate-slide-up">
-              <div className="flex items-center justify-center">
-                <ArrowDown className="w-12 h-12 text-accent animate-bounce" />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} className="animate-slide-up">
+              <div className="step-separator">
+                <ArrowDown className="step-separator-icon step-separator-icon-accent" />
               </div>
 
-              <Card className="p-8 bg-accent/10 backdrop-blur-sm border-accent glow-quantum space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                    <Unlock className="w-6 h-6 text-accent" />
+              <Card className="step-card glow-quantum" style={{ backgroundColor: 'hsl(var(--accent) / 0.1)', borderColor: 'hsl(var(--accent))' }}>
+                <div className="step-card-header" style={{ marginBottom: '1.5rem' }}>
+                  <div className="step-card-title-container">
+                    <div className="step-icon-container" style={{ backgroundColor: 'hsl(var(--accent) / 0.2)' }}>
+                      <Unlock className="step-icon" style={{ color: 'hsl(var(--accent))' }} />
+                    </div>
+                    <h2 className="step-title">Step 3: Decryption Complete</h2>
                   </div>
-                  <h2 className="text-3xl font-bold text-foreground">Step 3: Decryption Complete</h2>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="text-sm font-medium text-accent">Corrected Output</label>
+                <div className="decryption-output">
+                  <div className="direct-decryption-output-header">
+                    <label className="encryption-result-label" style={{ color: 'hsl(var(--accent))' }}>Corrected Output</label>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => copyToClipboard(decryptedOutput, "Decrypted output")}
-                      className="text-accent hover:text-accent/80"
+                      className="copy-button"
+                      style={{ color: 'hsl(var(--accent))' }}
                     >
-                      <Copy className="w-4 h-4" />
+                      <Copy style={{ width: '1rem', height: '1rem' }} />
                     </Button>
                   </div>
-                  <div className="bg-accent/5 p-6 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-base text-foreground break-all">
+                  <div className="decryption-output-content glow-quantum-strong">
                     {decryptedOutput}
                   </div>
                 </div>
@@ -457,7 +457,7 @@ const Index = () => {
                   />
                 )}
 
-                <div className="flex gap-4">
+                <div className="action-buttons">
                   <Button
                     onClick={() => {
                       setCircuitInput("");
@@ -467,7 +467,7 @@ const Index = () => {
                       toast.info("Ready for new circuit");
                     }}
                     variant="outline"
-                    className="flex-1 py-6 border-accent hover:bg-accent/10"
+                    className="new-circuit-button"
                   >
                     Start New Circuit
                   </Button>
