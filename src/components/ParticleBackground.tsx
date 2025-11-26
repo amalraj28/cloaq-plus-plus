@@ -86,5 +86,11 @@ export const ParticleBackground = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="particle-background" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-full h-full pointer-events-none opacity-30"
+      style={{ zIndex: 0 }}
+    />
+  );
 };

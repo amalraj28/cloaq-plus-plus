@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 interface MeasurementChartProps {
   measurements: string;
@@ -11,23 +10,23 @@ export const MeasurementChart = ({ measurements, title, isEncrypted }: Measureme
   const bits = measurements.split("");
   
   return (
-    <Card className={cn("measurement-chart glow-quantum", isEncrypted ? "measurement-chart-encrypted" : "measurement-chart-decrypted")}>
-      <h3 className="measurement-chart-title">{title}</h3>
-      <div className="measurement-bars">
+    <Card className={`p-4 ${isEncrypted ? 'bg-quantum-surface' : 'bg-accent/10'} border-quantum glow-quantum`}>
+      <h3 className="text-sm font-medium text-quantum mb-4">{title}</h3>
+      <div className="flex gap-2 justify-center items-end" style={{ minHeight: "120px" }}>
         {bits.map((bit, idx) => {
           const height = bit === "1" ? 100 : 40;
-          const barClass = bit === "1" 
-            ? (isEncrypted ? "measurement-bar-1-encrypted" : "measurement-bar-1-decrypted")
-            : "measurement-bar-0";
-          
           return (
-            <div key={idx} className="measurement-bar-container">
+            <div key={idx} className="flex flex-col items-center gap-2">
               <div 
-                className={cn("measurement-bar glow-quantum", barClass)}
+                className={`w-12 rounded-t-lg transition-all duration-500 ${
+                  bit === "1" 
+                    ? isEncrypted ? 'bg-primary' : 'bg-accent' 
+                    : 'bg-muted'
+                } glow-quantum`}
                 style={{ height: `${height}px` }}
               />
-              <span className="measurement-bit">{bit}</span>
-              <span className="measurement-qubit">q{idx}</span>
+              <span className="text-xs font-mono text-quantum">{bit}</span>
+              <span className="text-xs text-muted-foreground">q{idx}</span>
             </div>
           );
         })}

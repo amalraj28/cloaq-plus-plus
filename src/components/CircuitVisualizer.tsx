@@ -90,11 +90,12 @@ export const CircuitVisualizer = ({ circuit, title }: CircuitVisualizerProps) =>
   }, [circuit]);
 
   return (
-    <Card className="circuit-visualizer glow-quantum">
-      <h3 className="circuit-visualizer-title">{title}</h3>
+    <Card className="p-4 bg-quantum-surface border-quantum glow-quantum">
+      <h3 className="text-sm font-medium text-quantum mb-3">{title}</h3>
       <canvas 
         ref={canvasRef} 
-        className="circuit-canvas"
+        className="w-full rounded-lg bg-background/50"
+        style={{ minHeight: "300px" }}
       />
     </Card>
   );
