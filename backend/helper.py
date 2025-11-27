@@ -1,8 +1,9 @@
-from qiskit.qasm2 import dump as q2_dump, load as q2_load, loads as q2_loads
-from qiskit.qasm3 import dump as q3_dump, load as q3_load, loads as q3_loads
+from qiskit.qasm2 import dump as q2_dump, loads as q2_loads
+from qiskit.qasm3 import dump as q3_dump, loads as q3_loads
 from typing import Literal
 from qiskit import QuantumCircuit
 from uuid import uuid4
+
 
 
 class Input:
@@ -18,9 +19,6 @@ class Input:
 
         return n
     
-
-from typing import Literal
-
 
 def get_qasm_version(qasm_string: str) -> Literal[2, 3]:
     """
@@ -77,34 +75,11 @@ def get_qasm_version(qasm_string: str) -> Literal[2, 3]:
     raise ValueError("No valid OPENQASM version header found.")
 
 
-def read_qasm2(file_name: str) -> QuantumCircuit:
-    file_name = file_name.strip()
-    if not file_name.lower().endswith(".qasm"):
-        raise ValueError(f"{file_name} is not a valid QASM2 file.")
-
-    return q2_load(file_name)
-
-
-def read_qasm3(file_name: str):
-    file_name = file_name.strip()
-    if not file_name.lower().endswith(".qasm"):
-        raise ValueError(f"{file_name} is not a valid QASM3 file.")
-
-    return q3_load(file_name)
-
-def read_qasm2_from_string(qasm_string: str) -> QuantumCircuit:
+def read_qasm_from_string(qasm_string: str) -> QuantumCircuit:
     qasm_string = qasm_string.strip()
     version = get_qasm_version(qasm_string)
     
     return q2_loads(qasm_string) if version == 2 else q3_loads(qasm_string)
-
-
-def read_qasm3_from_string(qasm_string: str):
-    qasm_string = qasm_string.strip()
-    if not qasm_string.lower().endswith(".qasm"):
-        raise ValueError(f"{qasm_string} is not a valid QASM3 file.")
-
-    return q3_loads(qasm_string)
 
 
 def write_qasm3(qc: QuantumCircuit, file_name: str):

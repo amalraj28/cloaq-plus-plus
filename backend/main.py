@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from qiskit import QuantumCircuit, ClassicalRegister, transpile
 from qiskit_aer import AerSimulator
-from helper import read_qasm2, write_qasm2, read_qasm2_from_string
-from helper import read_qasm3, write_qasm3, read_qasm3_from_string
+from helper import read_qasm_from_string, write_qasm2
+from helper import write_qasm3
 from helper import get_qasm_version
 import random
 from dequeue import Deque
@@ -83,23 +83,9 @@ class QCircuit:
         }
 
     @classmethod
-    def from_qasm2(cls, file_name: str):
-        qc = read_qasm2(file_name)
-        return cls(qc)
-
-    @classmethod
-    def from_qasm3(cls, file_name: str):
-        qc = read_qasm3(file_name)
-        return cls(qc)
-
-    @classmethod
     def from_qasm_string(cls, qasm_string: str):
         version = get_qasm_version(qasm_string)
-        qc = (
-            read_qasm2_from_string(qasm_string)
-            if version == 2
-            else read_qasm3_from_string(qasm_string)
-        )
+        qc = read_qasm_from_string(qasm_string)
         return cls(qc)
 
     def to_qasm2(self, file_name: str):
