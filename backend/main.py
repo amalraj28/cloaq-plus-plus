@@ -290,39 +290,134 @@ def _circuit_has_measurements(circ: QuantumCircuit) -> bool:
 
 def generate_qc(input_qasm: str) -> QCircuit:
     qc = QCircuit.from_qasm_string(input_qasm)
-    qc = append_measurements(qc)
+    return qc
+
+
+def measure_with_registers(qc: QCircuit, qubits_to_measure: list[int], add_bits: bool = True):
+    """
+    Measure specified qubits while intelligently managing classical registers.
+    
+    Strategy:
+    1. Check for existing classical registers and reuse idle bits
+    2. If not enough idle bits, create additional classical registers
+    3. If no classical registers exist and add_bits=True, use measure_all with add_bits
+    
+    Args:
+        qc: QCircuit instance to measure
+        qubits_to_measure: list of qubit indices to measure
+        add_bits: if True, auto-create classical bits if needed
+    """
+    num_qubits = len(qubits_to_measure)
+    
+    # Get existing classical registers
+    cregs = qc.qc.cregs
+    
+    # Count available classical bits across all registers
+    total_cbits = sum(creg.size for creg in cregs)
+    
+    if total_cbits >= num_qubits:
+        # Reuse existing classical bits
+        cbit_index = 0
+        cbit_mapping = []
+        
+        for creg in cregs:
+            for i in range(creg.size):
+                if len(cbit_mapping) < num_qubits:
+                    cbit_mapping.append(creg[i])
+        
+        # Measure into existing classical bits
+        qc.qc.measure(qubits_to_measure, cbit_mapping[:num_qubits])
+    else:
+        # Not enough classical bits exist
+        if add_bits:
+            # Create new classical register for remaining bits
+            remaining_bits = num_qubits - total_cbits
+            new_creg = ClassicalRegister(remaining_bits, name=f"c{len(cregs)}")
+            qc.qc.add_register(new_creg)
+            
+            # Build full mapping: reuse existing bits + new bits
+            cbit_mapping = []
+            
+            # Add existing bits first
+            for creg in cregs:
+                for i in range(creg.size):
+                    cbit_mapping.append(creg[i])
+            
+            # Add new bits
+            for i in range(remaining_bits):
+                cbit_mapping.append(new_creg[i])
+            
+            # Measure into the combined mapping
+            qc.qc.measure(qubits_to_measure, cbit_mapping)
+        else:
+            # Fallback: measure without classical register mapping
+            qc.qc.measure(qubits_to_measure, qubits_to_measure)
+    
     return qc
 
 
 def append_measurements(qc: QCircuit) -> QCircuit:
     """
     Append measurements on all qubits **only if** there are no measurement
-    gates already present. If at least one measurement exists, the circuit
-    is left unchanged.
+    gates already present. Uses the new register-aware measurement function.
 
     Returns the same QCircuit instance (for chaining).
     """
     if not _circuit_has_measurements(qc.qc):
-        # measure all qubits, automatically adding classical bits
-        qc.measure(
+        measure_with_registers(
+            qc,
             qubits_to_measure=list(range(qc.qc.num_qubits)),
             add_bits=True,
-            measure_all=True,
         )
     return qc
 
 
 def encrypt_qc(qc: QCircuit, key_size: int) -> tuple[QCircuit, str]:
     encrypted = deepcopy(qc)
+    
+    measured_qubits: set[int] = set()
+    for inst in qc.qc.data:
+        op = getattr(inst, "operation", None) or inst[0]
+        if getattr(op, "name", "") == "measure":
+            for q in inst[1]:
+                try:
+                    idx = qc.qc.qubits.index(q)
+                except ValueError:
+                    # fallback: try attribute index if present
+                    idx = getattr(q, "index", None)
+                    if idx is None:
+                        continue
+                measured_qubits.add(idx)
+
+    # remove all measurement instructions from the encrypted copy
+    encrypted.qc.data = [
+        inst
+        for inst in encrypted.qc.data
+        if (getattr(inst, "operation", None) or inst[0]).name != "measure"
+    ]
+
+    # apply obfuscation/encryption
     key = encrypted.encrypt(key_size=key_size)
+
+    # re-apply measurements only to the qubits that were measured originally
+    if measured_qubits:
+        encrypted.measure(
+            qubits_to_measure=sorted(measured_qubits),
+            add_bits=False,
+            measure_all=False,
+        )
+
     return encrypted, key
 
 
 def get_measurements(qc: QCircuit, shots: int = 1024):
     # Later you can adapt this to accept a backend argument instead of
-    # always using AerSimulator inside QCircuit.compile_and_run().
-    _, res = qc.compile_and_run(shots=shots)
-    return res
+    # always using AerSimulator
+    qc = append_measurements(qc)
+    simulator = AerSimulator()
+    transpiled = transpile(qc.qc, simulator)
+    result = simulator.run(transpiled, shots=shots).result()
+    return result.get_counts()
 
 
 def decrypt_measurements(
@@ -352,7 +447,7 @@ def encrypt(req: EncryptRequest):
 
     original_image = get_image_url(qc)
     encrypted_image = get_image_url(encrypted_circuit)
-
+    
     return {
         "original_results": original_measurements,
         "encrypted_results": encrypted_measurements,

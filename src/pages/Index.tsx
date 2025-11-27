@@ -127,6 +127,8 @@ function Index() {
 			toast.error("Encryption failed", {
 				description: error instanceof Error ? error.message : "Unknown error",
 			});
+		} finally {
+			setIsEncrypting(false);
 		}
 	};
 
