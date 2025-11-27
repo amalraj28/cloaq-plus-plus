@@ -168,7 +168,7 @@ function Index() {
 	};
 
 	// Direct decryption function
-	const handleDirectDecryption = () => {
+	const handleDirectDecryption = async () => {
 		if (!directMeasurements.trim() || !directKey.trim()) {
 			toast.error("Please enter both measurements and key");
 			return;
@@ -176,19 +176,41 @@ function Index() {
 
 		setIsDirectDecrypting(true);
 
-		setTimeout(() => {
-			// Simulate decryption of measurements
-			const decrypted = `Corrected measurement output: ${directMeasurements
-				.split("")
-				.reverse()
-				.join("")}`;
+		try {
+			let parsedMeasurements;
+			try {
+				parsedMeasurements = JSON.parse(directMeasurements);
+			} catch {
+				toast.error("Invalid JSON format for measurements");
+				setIsDirectDecrypting(false);
+				return;
+			}
 
-			setDirectDecryptedOutput(decrypted);
-			setIsDirectDecrypting(false);
+			const response = await fetch("http://localhost:8000/decrypt", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					encrypted_values: parsedMeasurements,
+					key: directKey,
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error(`Decryption failed: ${response.statusText}`);
+			}
+
+			const { decrypted_results: decryptedResult } = await response.json();
+			setDirectDecryptedOutput(JSON.stringify(decryptedResult, null, 2));
 			toast.success("Measurements decrypted successfully!", {
 				description: "Output corrected using provided key",
 			});
-		}, 1500);
+		} catch (error) {
+			toast.error("Decryption failed", {
+				description: error instanceof Error ? error.message : "Unknown error",
+			});
+		} finally {
+			setIsDirectDecrypting(false);
+		}
 	};
 
 	return (
@@ -277,12 +299,12 @@ function Index() {
 										onClick={() =>
 											copyToClipboard(directDecryptedOutput, "Corrected output")
 										}
-										className="text-accent hover:text-accent/80"
+										className="text-accent hover:text-black hover:bg-accent/10"
 									>
 										<Copy className="w-4 h-4" />
 									</Button>
 								</div>
-								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-all">
+								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words">
 									{directDecryptedOutput}
 								</div>
 							</div>
@@ -395,26 +417,18 @@ function Index() {
 									Upload QASM File
 								</Button>
 								{circuitInput && (
-									<div className="p-4 bg-input rounded-lg border border-quantum/30">
+									<div className="p-4 bg-input rounded-lg border border-quantum/30 max-h-64 overflow-y-auto">
 										<p className="text-sm text-muted-foreground mb-2">
-											Loaded circuit preview:
+											Loaded circuit:
 										</p>
-										<pre className="text-xs font-mono text-foreground overflow-x-auto max-h-32">
-											{circuitInput.slice(0, 200)}...
+										<pre className="text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-words">
+											{circuitInput}
 										</pre>
 									</div>
 								)}
 							</TabsContent>
 						</Tabs>
 
-						{circuitInput && (
-							<div className="animate-slide-up">
-								<CircuitVisualizer
-									circuit={circuitInput}
-									title="Input Circuit Visualization"
-								/>
-							</div>
-						)}
 
 						<Button
 							onClick={encryptCircuit}
@@ -456,24 +470,24 @@ function Index() {
 									<div className="space-y-2">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-quantum">
-												Encrypted Circuit
+												Encrypted Measurements
 											</label>
 											<Button
 												variant="ghost"
 												size="sm"
 												onClick={() =>
 													copyToClipboard(
-														encryptionResult.encryptedCircuit,
-														"Encrypted circuit"
+														JSON.stringify(encryptionResult.encryptedResult),
+														"Encrypted measurements"
 													)
 												}
-												className="text-quantum hover:text-quantum/80"
+												className="text-quantum hover:text-black hover:bg-quantum/10"
 											>
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-all max-h-32 overflow-y-auto">
-											{encryptionResult.encryptedCircuit}
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+											{JSON.stringify(encryptionResult.encryptedResult)}
 										</div>
 									</div>
 
@@ -491,12 +505,12 @@ function Index() {
 														"Encryption key"
 													)
 												}
-												className="text-quantum hover:text-quantum/80"
+												className="text-quantum hover:text-black hover:bg-quantum/10"
 											>
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-all max-h-32 overflow-y-auto">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
 											{encryptionResult.key}
 										</div>
 									</div>
@@ -557,29 +571,60 @@ function Index() {
 									</h2>
 								</div>
 
-								<div className="space-y-2">
-									<div className="flex items-center justify-between">
-										<label className="text-sm font-medium text-accent">
-											Corrected Output
-										</label>
-										<Button
-											variant="ghost"
-											size="sm"
-											onClick={() =>
-												copyToClipboard(
-													JSON.stringify(decryptionResult.decryptedResult),
-													"Decrypted output"
-												)
-											}
-											className="text-accent hover:text-accent/80"
-										>
-											<Copy className="w-4 h-4" />
-										</Button>
+								<div className="grid md:grid-cols-2 gap-4">
+									<div className="space-y-2">
+										<div className="flex items-center justify-between">
+											<label className="text-sm font-medium text-accent">
+												Corrected Output
+											</label>
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() =>
+													copyToClipboard(
+														JSON.stringify(decryptionResult.decryptedResult),
+														"Decrypted output"
+													)
+												}
+												className="text-accent hover:text-black hover:bg-accent/10"
+											>
+												<Copy className="w-4 h-4" />
+											</Button>
+										</div>
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+											{JSON.stringify(decryptionResult.decryptedResult, null, 2)}
+										</div>
 									</div>
-									<div className="bg-accent/5 p-6 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-base text-foreground break-all">
-										{JSON.stringify(decryptionResult.decryptedResult, null, 2)}
+
+									<div className="space-y-2">
+										<div className="flex items-center justify-between">
+											<label className="text-sm font-medium text-accent">
+												Key
+											</label>
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() =>
+													copyToClipboard(decryptionResult.key, "Key")
+												}
+												className="text-accent hover:text-black hover:bg-accent/10"
+											>
+												<Copy className="w-4 h-4" />
+											</Button>
+										</div>
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+											{decryptionResult.key}
+										</div>
 									</div>
 								</div>
+
+								{encryptionResult && (
+									<MeasurementChart
+										measurements={encryptionResult.encryptedResult}
+										title="Encrypted Measurement Outputs"
+										isEncrypted={true}
+									/>
+								)}
 
 								{decryptionResult && (
 									<MeasurementChart
