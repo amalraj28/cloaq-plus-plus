@@ -3,6 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import { toast } from "sonner";
 import {
 	Lock,
@@ -12,6 +18,7 @@ import {
 	Upload,
 	ArrowDown,
 	CheckCircle2,
+	Image as ImageIcon,
 } from "lucide-react";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { CircuitVisualizer } from "@/components/CircuitVisualizer";
@@ -53,6 +60,22 @@ function Index() {
 	const [directKey, setDirectKey] = useState("");
 	const [directDecryptedOutput, setDirectDecryptedOutput] = useState("");
 	const [isDirectDecrypting, setIsDirectDecrypting] = useState(false);
+	const [imageDialogOpen, setImageDialogOpen] = useState(false);
+	const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
+	const [currentImageTitle, setCurrentImageTitle] = useState("");
+
+	const showCircuitImage = async (filename: string | null, title: string) => {
+		if (!filename) return;
+		
+		try {
+			const imageUrl = `http://localhost:8000/image/${filename}`;
+			setCurrentImageUrl(imageUrl);
+			setCurrentImageTitle(title);
+			setImageDialogOpen(true);
+		} catch (error) {
+			toast.error("Failed to load circuit image");
+		}
+	};
 
 	const encryptCircuit = async () => {
 		if (!circuitInput.trim()) {
@@ -299,7 +322,7 @@ function Index() {
 										onClick={() =>
 											copyToClipboard(directDecryptedOutput, "Corrected output")
 										}
-										className="text-accent hover:text-black hover:bg-accent/10"
+										className="text-accent hover:bg-accent/10 [&:hover_svg]:text-black"
 									>
 										<Copy className="w-4 h-4" />
 									</Button>
@@ -470,24 +493,24 @@ function Index() {
 									<div className="space-y-2">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-quantum">
-												Encrypted Measurements
+												Original Measurements
 											</label>
 											<Button
 												variant="ghost"
 												size="sm"
 												onClick={() =>
 													copyToClipboard(
-														JSON.stringify(encryptionResult.encryptedResult),
-														"Encrypted measurements"
+														JSON.stringify(originalResult),
+														"Original measurements"
 													)
 												}
-												className="text-quantum hover:text-black hover:bg-quantum/10"
+												className="text-quantum hover:bg-quantum/10 [&:hover_svg]:text-black"
 											>
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
 										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
-											{JSON.stringify(encryptionResult.encryptedResult)}
+											{JSON.stringify(originalResult)}
 										</div>
 									</div>
 
@@ -505,7 +528,7 @@ function Index() {
 														"Encryption key"
 													)
 												}
-												className="text-quantum hover:text-black hover:bg-quantum/10"
+												className="text-quantum hover:bg-quantum/10 [&:hover_svg]:text-black"
 											>
 												<Copy className="w-4 h-4" />
 											</Button>
@@ -514,6 +537,49 @@ function Index() {
 											{encryptionResult.key}
 										</div>
 									</div>
+
+									<div className="space-y-2">
+										<div className="flex items-center justify-between">
+											<label className="text-sm font-medium text-quantum">
+												Encrypted Measurements
+											</label>
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() =>
+													copyToClipboard(
+														JSON.stringify(encryptionResult.encryptedResult),
+														"Encrypted measurements"
+													)
+												}
+												className="text-quantum hover:bg-quantum/10 [&:hover_svg]:text-black"
+											>
+												<Copy className="w-4 h-4" />
+											</Button>
+										</div>
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+											{JSON.stringify(encryptionResult.encryptedResult)}
+										</div>
+									</div>
+								</div>
+
+								<div className="grid md:grid-cols-2 gap-4">
+									<Button
+										onClick={() => showCircuitImage(originalImageURL, "Original Circuit")}
+										variant="outline"
+										className="py-6 border-quantum hover:bg-quantum/10"
+									>
+										<ImageIcon className="w-5 h-5 mr-2" />
+										View Original Circuit
+									</Button>
+									<Button
+										onClick={() => showCircuitImage(encryptedImageURL, "Encrypted Circuit")}
+										variant="outline"
+										className="py-6 border-quantum hover:bg-quantum/10"
+									>
+										<ImageIcon className="w-5 h-5 mr-2" />
+										View Encrypted Circuit
+									</Button>
 								</div>
 
 								<MeasurementChart
@@ -575,24 +641,24 @@ function Index() {
 									<div className="space-y-2">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-accent">
-												Corrected Output
+												Encrypted Measurements
 											</label>
 											<Button
 												variant="ghost"
 												size="sm"
 												onClick={() =>
 													copyToClipboard(
-														JSON.stringify(decryptionResult.decryptedResult),
-														"Decrypted output"
+														JSON.stringify(encryptionResult?.encryptedResult),
+														"Encrypted measurements"
 													)
 												}
-												className="text-accent hover:text-black hover:bg-accent/10"
+												className="text-accent hover:bg-accent/10 [&:hover_svg]:text-black"
 											>
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
 										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
-											{JSON.stringify(decryptionResult.decryptedResult, null, 2)}
+											{JSON.stringify(encryptionResult?.encryptedResult, null, 2)}
 										</div>
 									</div>
 
@@ -607,13 +673,37 @@ function Index() {
 												onClick={() =>
 													copyToClipboard(decryptionResult.key, "Key")
 												}
-												className="text-accent hover:text-black hover:bg-accent/10"
+												className="text-accent hover:bg-accent/10 [&:hover_svg]:text-black"
 											>
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
 										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
 											{decryptionResult.key}
+										</div>
+									</div>
+
+									<div className="space-y-2">
+										<div className="flex items-center justify-between">
+											<label className="text-sm font-medium text-accent">
+												Decrypted Measurements
+											</label>
+											<Button
+												variant="ghost"
+												size="sm"
+												onClick={() =>
+													copyToClipboard(
+														JSON.stringify(decryptionResult.decryptedResult),
+														"Decrypted output"
+													)
+												}
+												className="text-accent hover:bg-accent/10 [&:hover_svg]:text-black"
+											>
+												<Copy className="w-4 h-4" />
+											</Button>
+										</div>
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+											{JSON.stringify(decryptionResult.decryptedResult, null, 2)}
 										</div>
 									</div>
 								</div>
@@ -654,6 +744,23 @@ function Index() {
 					)}
 				</div>
 			</div>
+
+			<Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
+				<DialogContent className="max-w-4xl max-h-[90vh] overflow-auto">
+					<DialogHeader>
+						<DialogTitle>{currentImageTitle}</DialogTitle>
+					</DialogHeader>
+					{currentImageUrl && (
+						<div className="flex justify-center items-center p-4">
+							<img
+								src={currentImageUrl}
+								alt={currentImageTitle}
+								className="max-w-full h-auto rounded-lg"
+							/>
+						</div>
+					)}
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }
