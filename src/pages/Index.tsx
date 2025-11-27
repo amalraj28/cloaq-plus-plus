@@ -64,16 +64,29 @@ function Index() {
 	const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 	const [currentImageTitle, setCurrentImageTitle] = useState("");
 
-	const showCircuitImage = async (filename: string | null, title: string) => {
-		if (!filename) return;
-		
+	const showCircuitImage = async (imageURL: string, title: string) => {
+		if (!imageURL) {
+			alert(`Image URL not available: ${imageURL}`);
+			return;
+		}
+
 		try {
-			const imageUrl = `http://localhost:8000/image/${filename}`;
+			const response = await fetch(`http://localhost:8000${imageURL}`);
+
+			if (!response.ok) {
+				throw new Error(`Failed to fetch image: ${response.statusText}`);
+			}
+
+			const blob = await response.blob();
+			const imageUrl = URL.createObjectURL(blob);
 			setCurrentImageUrl(imageUrl);
 			setCurrentImageTitle(title);
 			setImageDialogOpen(true);
 		} catch (error) {
-			toast.error("Failed to load circuit image");
+			toast.error(
+				`${error instanceof Error ? error.message : "Unknown error"}`
+			);
+			return;
 		}
 	};
 
@@ -103,8 +116,8 @@ function Index() {
 			const {
 				original_results: originalResults,
 				encrypted_results: encryptedResults,
-				original_image: originalImage,
-				encrypted_image: encryptedImage,
+				original_circuit: originalImage,
+				encrypted_circuit: encryptedImage,
 				key: encryptionKey,
 			} = await response.json();
 
@@ -454,7 +467,6 @@ function Index() {
 							</TabsContent>
 						</Tabs>
 
-
 						<Button
 							onClick={encryptCircuit}
 							disabled={isEncrypting}
@@ -567,7 +579,9 @@ function Index() {
 
 								<div className="grid md:grid-cols-2 gap-4">
 									<Button
-										onClick={() => showCircuitImage(originalImageURL, "Original Circuit")}
+										onClick={() =>
+											showCircuitImage(originalImageURL, "Original Circuit")
+										}
 										variant="outline"
 										className="py-6 border-quantum hover:bg-quantum/10"
 									>
@@ -575,7 +589,9 @@ function Index() {
 										View Original Circuit
 									</Button>
 									<Button
-										onClick={() => showCircuitImage(encryptedImageURL, "Encrypted Circuit")}
+										onClick={() =>
+											showCircuitImage(encryptedImageURL, "Encrypted Circuit")
+										}
 										variant="outline"
 										className="py-6 border-quantum hover:bg-quantum/10"
 									>
@@ -660,7 +676,11 @@ function Index() {
 											</Button>
 										</div>
 										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
-											{JSON.stringify(encryptionResult?.encryptedResult, null, 2)}
+											{JSON.stringify(
+												encryptionResult?.encryptedResult,
+												null,
+												2
+											)}
 										</div>
 									</div>
 
@@ -705,7 +725,11 @@ function Index() {
 											</Button>
 										</div>
 										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
-											{JSON.stringify(decryptionResult.decryptedResult, null, 2)}
+											{JSON.stringify(
+												decryptionResult.decryptedResult,
+												null,
+												2
+											)}
 										</div>
 									</div>
 								</div>
