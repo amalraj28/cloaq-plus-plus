@@ -347,7 +347,7 @@ function Index() {
 										<Copy className="w-4 h-4" />
 									</Button>
 								</div>
-								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground overflow-x-auto w-full">
+								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground overflow-x-auto w-full hide-scrollbar">
 									<pre className="whitespace-pre">{directDecryptedOutput}</pre>
 								</div>
 							</div>
@@ -528,7 +528,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
 											<pre className="whitespace-pre">{JSON.stringify(originalResult)}</pre>
 										</div>
 									</div>
@@ -552,7 +552,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
 											<pre className="whitespace-pre">{encryptionResult.key}</pre>
 										</div>
 									</div>
@@ -576,7 +576,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
 											<pre className="whitespace-pre">{JSON.stringify(encryptionResult.encryptedResult)}</pre>
 										</div>
 									</div>
@@ -680,7 +680,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
 											<pre className="whitespace-pre">{JSON.stringify(
 												encryptionResult?.encryptedResult,
 												null,
@@ -705,7 +705,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
 											<pre className="whitespace-pre">{decryptionResult.key}</pre>
 										</div>
 									</div>
@@ -729,7 +729,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
 											<pre className="whitespace-pre">{JSON.stringify(
 												decryptionResult.decryptedResult,
 												null,
