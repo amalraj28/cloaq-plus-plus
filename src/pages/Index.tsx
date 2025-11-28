@@ -71,7 +71,7 @@ function Index() {
 		}
 
 		try {
-			const response = await fetch(`http://localhost:8000${imageURL}`);
+			const response = await fetch(imageURL);
 
 			if (!response.ok) {
 				throw new Error(`Failed to fetch image: ${response.statusText}`);
@@ -99,7 +99,7 @@ function Index() {
 		setIsEncrypting(true);
 
 		try {
-			const response = await fetch("http://localhost:8000/encrypt", {
+			const response = await fetch("/api/encrypt", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -152,7 +152,7 @@ function Index() {
 		setIsDecrypting(true);
 
 		try {
-			const response = await fetch("http://localhost:8000/decrypt", {
+			const response = await fetch("/api/decrypt", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

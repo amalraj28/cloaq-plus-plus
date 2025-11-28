@@ -14,5 +14,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(encrypt_router)
-app.include_router(image_router)
+app.include_router(encrypt_router, prefix="/api")
+app.include_router(image_router, prefix="/api")
