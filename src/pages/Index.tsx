@@ -287,7 +287,7 @@ function Index() {
 						</p>
 
 						<div className="grid md:grid-cols-2 gap-4">
-							<div className="space-y-2">
+							<div className="space-y-2 min-w-0">
 								<label className="text-sm font-medium text-accent">
 									Encrypted Measurements
 								</label>
@@ -299,7 +299,7 @@ function Index() {
 								/>
 							</div>
 
-							<div className="space-y-2">
+							<div className="space-y-2 min-w-0">
 								<label className="text-sm font-medium text-accent">
 									Encryption Key
 								</label>
@@ -331,7 +331,7 @@ function Index() {
 						</Button>
 
 						{directDecryptedOutput && (
-							<div className="space-y-2 animate-slide-up">
+							<div className="space-y-2 animate-slide-up min-w-0">
 								<div className="flex items-center justify-between">
 									<label className="text-sm font-medium text-accent">
 										Corrected Output
@@ -347,8 +347,8 @@ function Index() {
 										<Copy className="w-4 h-4" />
 									</Button>
 								</div>
-								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words overflow-x-auto max-w-full">
-									{directDecryptedOutput}
+								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground overflow-x-auto w-full">
+									<pre className="whitespace-pre">{directDecryptedOutput}</pre>
 								</div>
 							</div>
 						)}
@@ -509,7 +509,7 @@ function Index() {
 								</div>
 
 								<div className="grid md:grid-cols-2 gap-4">
-									<div className="space-y-2">
+									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-quantum">
 												Original Measurements
@@ -528,12 +528,12 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
-											{JSON.stringify(originalResult)}
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+											<pre className="whitespace-pre">{JSON.stringify(originalResult)}</pre>
 										</div>
 									</div>
 
-									<div className="space-y-2">
+									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-quantum">
 												Encryption Key
@@ -552,12 +552,12 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
-											{encryptionResult.key}
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+											<pre className="whitespace-pre">{encryptionResult.key}</pre>
 										</div>
 									</div>
 
-									<div className="space-y-2">
+									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-quantum">
 												Encrypted Measurements
@@ -576,8 +576,8 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
-											{JSON.stringify(encryptionResult.encryptedResult)}
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+											<pre className="whitespace-pre">{JSON.stringify(encryptionResult.encryptedResult)}</pre>
 										</div>
 									</div>
 								</div>
@@ -661,7 +661,7 @@ function Index() {
 								</div>
 
 								<div className="grid md:grid-cols-2 gap-4">
-									<div className="space-y-2">
+									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-accent">
 												Encrypted Measurements
@@ -680,16 +680,16 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
-											{JSON.stringify(
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+											<pre className="whitespace-pre">{JSON.stringify(
 												encryptionResult?.encryptedResult,
 												null,
 												2
-											)}
+											)}</pre>
 										</div>
 									</div>
 
-									<div className="space-y-2">
+									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-accent">
 												Key
@@ -705,12 +705,12 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
-											{decryptionResult.key}
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+											<pre className="whitespace-pre">{decryptionResult.key}</pre>
 										</div>
 									</div>
 
-									<div className="space-y-2">
+									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-accent">
 												Decrypted Measurements
@@ -729,12 +729,12 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
-											{JSON.stringify(
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full">
+											<pre className="whitespace-pre">{JSON.stringify(
 												decryptionResult.decryptedResult,
 												null,
 												2
-											)}
+											)}</pre>
 										</div>
 									</div>
 								</div>
