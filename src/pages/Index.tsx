@@ -21,9 +21,9 @@ import {
 	Image as ImageIcon,
 } from "lucide-react";
 import { ParticleBackground } from "@/components/ParticleBackground";
-import { CircuitVisualizer } from "@/components/CircuitVisualizer";
 import { MeasurementChart } from "@/components/MeasurementChart";
 import { CloaQLogo } from "@/components/CloaQLogo";
+import { defaultQASM } from "@/exports/exports";
 
 interface EncryptionResult {
 	encryptedCircuit: string;
@@ -37,7 +37,7 @@ interface DecryptionResult {
 }
 
 function Index() {
-	const [circuitInput, setCircuitInput] = useState("");
+	const [circuitInput, setCircuitInput] = useState(defaultQASM);
 	const [encryptionResult, setEncryptionResult] =
 		useState<EncryptionResult | null>(null);
 	const [originalResult, setOriginalResult] = useState<Record<
@@ -63,6 +63,7 @@ function Index() {
 	const [imageDialogOpen, setImageDialogOpen] = useState(false);
 	const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(null);
 	const [currentImageTitle, setCurrentImageTitle] = useState("");
+	const prefixURL = "/api";
 
 	const showCircuitImage = async (imageURL: string, title: string) => {
 		if (!imageURL) {
@@ -70,8 +71,12 @@ function Index() {
 			return;
 		}
 
+		if (!imageURL.startsWith("/")) {
+			imageURL = `/${imageURL}`;
+		}
+
 		try {
-			const response = await fetch(imageURL);
+			const response = await fetch(`${prefixURL}${imageURL}`);
 
 			if (!response.ok) {
 				throw new Error(`Failed to fetch image: ${response.statusText}`);
