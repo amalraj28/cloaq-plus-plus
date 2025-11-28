@@ -295,7 +295,7 @@ function Index() {
 									placeholder="Enter encrypted measurement outputs (e.g., 10110101)"
 									value={directMeasurements}
 									onChange={(e) => setDirectMeasurements(e.target.value)}
-									className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none"
+									className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none w-full"
 								/>
 							</div>
 
@@ -307,7 +307,7 @@ function Index() {
 									placeholder="Enter the encryption key"
 									value={directKey}
 									onChange={(e) => setDirectKey(e.target.value)}
-									className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none"
+									className="min-h-[100px] bg-input border-accent/50 focus:border-accent focus:glow-quantum text-foreground font-mono resize-none w-full"
 								/>
 							</div>
 						</div>
@@ -347,7 +347,7 @@ function Index() {
 										<Copy className="w-4 h-4" />
 									</Button>
 								</div>
-								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words">
+								<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words overflow-x-auto max-w-full">
 									{directDecryptedOutput}
 								</div>
 							</div>
@@ -439,7 +439,7 @@ function Index() {
 									placeholder="Enter your QASM quantum circuit (e.g., OPENQASM 2.0; include qelib1.inc; qreg q[2]; h q[0]; cx q[0],q[1];)"
 									value={circuitInput}
 									onChange={(e) => setCircuitInput(e.target.value)}
-									className="min-h-[150px] bg-input border-quantum/50 focus:border-quantum focus:glow-quantum text-foreground font-mono resize-none"
+									className="min-h-[150px] bg-input border-quantum/50 focus:border-quantum focus:glow-quantum text-foreground font-mono resize-none w-full"
 								/>
 							</TabsContent>
 
@@ -528,7 +528,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
 											{JSON.stringify(originalResult)}
 										</div>
 									</div>
@@ -552,7 +552,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
 											{encryptionResult.key}
 										</div>
 									</div>
@@ -576,7 +576,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
 											{JSON.stringify(encryptionResult.encryptedResult)}
 										</div>
 									</div>
@@ -680,7 +680,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
 											{JSON.stringify(
 												encryptionResult?.encryptedResult,
 												null,
@@ -705,7 +705,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
 											{decryptionResult.key}
 										</div>
 									</div>
@@ -729,7 +729,7 @@ function Index() {
 												<Copy className="w-4 h-4" />
 											</Button>
 										</div>
-										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto">
+										<div className="bg-accent/5 p-4 rounded-lg border-2 border-accent glow-quantum-strong font-mono text-sm text-foreground break-words max-h-32 overflow-y-auto overflow-x-auto max-w-full">
 											{JSON.stringify(
 												decryptionResult.decryptedResult,
 												null,
