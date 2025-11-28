@@ -13,7 +13,7 @@ export const MeasurementChart = ({ measurements, title, isEncrypted }: Measureme
   return (
     <Card className={`p-4 ${isEncrypted ? 'bg-quantum-surface' : 'bg-accent/10'} border-quantum glow-quantum`}>
       <h3 className="text-sm font-medium text-quantum mb-4">{title}</h3>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto hide-scrollbar">
         <div className="flex gap-2 justify-center items-end min-w-min px-2" style={{ height: "250px" }}>
           {entries.map(([bitString, count]) => {
             const heightPx = (count / maxValue) * 200;
