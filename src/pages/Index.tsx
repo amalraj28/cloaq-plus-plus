@@ -529,7 +529,7 @@ function Index() {
 											</Button>
 										</div>
 										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
-											<pre className="whitespace-pre">{JSON.stringify(originalResult)}</pre>
+											<pre className="whitespace-pre">{JSON.stringify(originalResult, null, 2)}</pre>
 										</div>
 									</div>
 
@@ -577,7 +577,7 @@ function Index() {
 											</Button>
 										</div>
 										<div className="bg-input p-4 rounded-lg border border-quantum/30 font-mono text-sm text-foreground max-h-32 overflow-y-auto overflow-x-auto w-full hide-scrollbar">
-											<pre className="whitespace-pre">{JSON.stringify(encryptionResult.encryptedResult)}</pre>
+											<pre className="whitespace-pre">{JSON.stringify(encryptionResult.encryptedResult, null, 2)}</pre>
 										</div>
 									</div>
 								</div>
