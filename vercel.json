@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://cloaq-production.up.railway.app/api/:path*"
+      "destination": "https://api.cloaq.obfusqate.com/api/:path*"
     }
   ]
 }
