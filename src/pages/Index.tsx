@@ -686,7 +686,7 @@ function Index() {
 									) : (
 										<>
 											<Unlock className="w-6 h-6 mr-2" />
-											Decrypt Circuit
+											Decrypt Measurements
 										</>
 									)}
 								</Button>
