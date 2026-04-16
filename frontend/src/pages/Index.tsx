@@ -229,7 +229,7 @@ function Index() {
 				return;
 			}
 
-			const response = await fetch("http://localhost:8000/decrypt", {
+			const response = await fetch(`${prefixURL}/decrypt`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

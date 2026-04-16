@@ -1,73 +1,104 @@
-# Welcome to your Lovable project
+# CloaQ
 
-## Project info
+CloaQ is packaged as a single Dockerized web application with:
 
-**URL**: https://lovable.dev/projects/9f891c09-a78f-46d5-892f-7a9ff654eeaa
+- a React frontend in `frontend/`
+- a FastAPI backend in `backend/`
 
-## How can I edit this code?
+The container serves the website and API together on port `8000`.
 
-There are several ways of editing your application.
+## Run the public image
 
-**Use Lovable**
+If the public image has already been published, the simplest way to run CloaQ is:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/9f891c09-a78f-46d5-892f-7a9ff654eeaa) and start prompting.
+```bash
+docker run --rm -p 8000:8000 cloaq/cloaq:latest
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+Then open:
 
-**Use your preferred IDE**
+```text
+http://localhost:8000
+```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Notes:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- The container logs may show `0.0.0.0:8000`. That is the internal bind address inside Docker.
+- In your browser, use `localhost:8000`, not `0.0.0.0:8000`.
+- `--rm` removes the stopped container automatically when you exit it.
 
-Follow these steps:
+## Run from source with Docker Compose
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+To build and run the app from this repository:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```bash
+docker compose up --build
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+Then open:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```text
+http://localhost:8000
+```
+
+To stop it:
+
+```bash
+docker compose down
+```
+
+## Publish the Docker image
+
+To publish a multi-platform image for both `linux/amd64` and `linux/arm64`:
+
+```bash
+docker login
+docker buildx create --use --name cloaq-builder
+docker buildx build --platform linux/amd64,linux/arm64 -t cloaq/cloaq:latest --push .
+```
+
+To verify the published image:
+
+```bash
+docker buildx imagetools inspect cloaq/cloaq:latest
+```
+
+You should see entries for:
+
+- `linux/amd64`
+- `linux/arm64`
+
+## Repository layout
+
+```text
+backend/   FastAPI application
+frontend/  React/Vite application
+Dockerfile Combined production image
+compose.yaml Local Docker Compose setup
+```
+
+## Local development without Docker
+
+Frontend:
+
+```bash
+cd frontend
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Backend:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+cd backend
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-**Use GitHub Codespaces**
+On Windows PowerShell, activate the virtual environment with:
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/9f891c09-a78f-46d5-892f-7a9ff654eeaa) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```powershell
+.venv\Scripts\Activate.ps1
+```
