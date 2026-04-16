@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 import tempfile
 from app.core.utils import generate_unique_string
 
@@ -23,9 +24,10 @@ def save_to_temp(img: Figure, filename: str):
     return f"/image/{filename}"
 
 
-def get_image_url(qc: QCircuit):
-    unique_name = generate_unique_string()
-    filename = f"circuit_{unique_name}.png"
+def get_image_url(qc: QCircuit, filename: Optional[str] = None):
+    if filename is None:
+        unique_name = generate_unique_string()
+        filename = f"circuit_{unique_name}.png"
     fig = circuit_drawer(qc.qc, output="mpl")
     
     return save_to_temp(fig, filename) # type: ignore
