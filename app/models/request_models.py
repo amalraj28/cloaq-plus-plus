@@ -10,3 +10,7 @@ class EncryptRequest(BaseModel):
 class DecryptRequest(BaseModel):
     encrypted_values: dict[str, int]
     key: str
+
+
+class DownloadEncryptedCircuitRequest(BaseModel):
+    encrypt_artifact: str
