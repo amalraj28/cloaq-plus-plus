@@ -600,7 +600,7 @@ function Index() {
 										showCircuitImage(originalImageURL, "Original Circuit")
 									}
 									variant="outline"
-									className="py-6 border-quantum hover:bg-quantum/10"
+									className="py-6 border-quantum hover:bg-quantum/10 hover:text-foreground"
 								>
 									<ImageIcon className="w-5 h-5 mr-2" />
 									View Original Circuit
@@ -610,7 +610,7 @@ function Index() {
 										showCircuitImage(encryptedImageURL, "Encrypted Circuit")
 									}
 									variant="outline"
-									className="py-6 border-quantum hover:bg-quantum/10"
+									className="py-6 border-quantum hover:bg-quantum/10 hover:text-foreground"
 								>
 									<ImageIcon className="w-5 h-5 mr-2" />
 									View Encrypted Circuit
@@ -649,7 +649,7 @@ function Index() {
 										}
 									}}
 									variant="outline"
-									className="py-6 border-quantum hover:bg-quantum/10 md:col-span-2 lg:col-span-1"
+									className="py-6 border-quantum hover:bg-quantum/10 hover:text-foreground md:col-span-2 lg:col-span-1"
 								>
 									<Download className="w-5 h-5 mr-2" />
 									Download Encrypted Circuit
