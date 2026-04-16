@@ -19,6 +19,7 @@ import {
 	ArrowDown,
 	CheckCircle2,
 	Image as ImageIcon,
+	Download,
 } from "lucide-react";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { MeasurementChart } from "@/components/MeasurementChart";
@@ -589,28 +590,65 @@ function Index() {
 									</div>
 								</div>
 
-								<div className="grid md:grid-cols-2 gap-4">
-									<Button
-										onClick={() =>
-											showCircuitImage(originalImageURL, "Original Circuit")
+							<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+								<Button
+									onClick={() =>
+										showCircuitImage(originalImageURL, "Original Circuit")
+									}
+									variant="outline"
+									className="py-6 border-quantum hover:bg-quantum/10"
+								>
+									<ImageIcon className="w-5 h-5 mr-2" />
+									View Original Circuit
+								</Button>
+								<Button
+									onClick={() =>
+										showCircuitImage(encryptedImageURL, "Encrypted Circuit")
+									}
+									variant="outline"
+									className="py-6 border-quantum hover:bg-quantum/10"
+								>
+									<ImageIcon className="w-5 h-5 mr-2" />
+									View Encrypted Circuit
+								</Button>
+								<Button
+									onClick={async () => {
+										try {
+											const response = await fetch("/api/encrypt/download", {
+												method: "POST",
+												headers: { "Content-Type": "application/json" },
+												body: JSON.stringify({
+													qasm_string: circuitInput,
+													key_size: 20,
+													shots: 1024,
+												}),
+											});
+											if (!response.ok) {
+												throw new Error(`Download failed: ${response.statusText}`);
+											}
+											const blob = await response.blob();
+											const url = window.URL.createObjectURL(blob);
+											const a = document.createElement("a");
+											a.href = url;
+											a.download = "encrypted_circuit.qasm";
+											document.body.appendChild(a);
+											a.click();
+											a.remove();
+											window.URL.revokeObjectURL(url);
+											toast.success("Download started!");
+										} catch (error) {
+											toast.error(
+												`${error instanceof Error ? error.message : "Download failed"}`
+											);
 										}
-										variant="outline"
-										className="py-6 border-quantum hover:bg-quantum/10"
-									>
-										<ImageIcon className="w-5 h-5 mr-2" />
-										View Original Circuit
-									</Button>
-									<Button
-										onClick={() =>
-											showCircuitImage(encryptedImageURL, "Encrypted Circuit")
-										}
-										variant="outline"
-										className="py-6 border-quantum hover:bg-quantum/10"
-									>
-										<ImageIcon className="w-5 h-5 mr-2" />
-										View Encrypted Circuit
-									</Button>
-								</div>
+									}}
+									variant="outline"
+									className="py-6 border-quantum hover:bg-quantum/10 md:col-span-2 lg:col-span-1"
+								>
+									<Download className="w-5 h-5 mr-2" />
+									Download Encrypted Circuit
+								</Button>
+							</div>
 
 								<MeasurementChart
 									measurements={originalResult}
