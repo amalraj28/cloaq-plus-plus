@@ -56,6 +56,7 @@ function Index() {
 	const [inputMethod, setInputMethod] = useState<"text" | "file">("text");
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
+	const [encryptArtifact, setEncryptArtifact] = useState<string | null>(null);
 
 	const [directMeasurements, setDirectMeasurements] = useState("");
 	const [directKey, setDirectKey] = useState("");
@@ -127,11 +128,14 @@ function Index() {
 				key: encryptionKey,
 			} = await response.json();
 
+			const encryptArtifact = encryptedImage.split("/").at(-1) ?? null;
+			setEncryptArtifact(encryptArtifact);
+
 			setOriginalResult(originalResults);
 			setOriginalImageURL(originalImage);
 			setEncryptedImageURL(encryptedImage);
 			setEncryptionResult({
-				encryptedCircuit: "",
+				encryptedCircuit: encryptedImage,
 				key: encryptionKey,
 				encryptedResult: encryptedResults,
 			});
@@ -614,13 +618,15 @@ function Index() {
 								<Button
 									onClick={async () => {
 										try {
+											if (!encryptionResult?.encryptedCircuit) {
+												throw new Error("Encrypted circuit is not available");
+											}
+
 											const response = await fetch("/api/encrypt/download", {
 												method: "POST",
 												headers: { "Content-Type": "application/json" },
 												body: JSON.stringify({
-													qasm_string: circuitInput,
-													key_size: 20,
-													shots: 1024,
+													encrypt_artifact: encryptArtifact,
 												}),
 											});
 											if (!response.ok) {
