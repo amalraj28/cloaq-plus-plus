@@ -524,7 +524,7 @@ function Index() {
 									<div className="space-y-2 min-w-0">
 										<div className="flex items-center justify-between">
 											<label className="text-sm font-medium text-quantum">
-												Original Measurements
+												Simulated Measurements
 											</label>
 											<Button
 												variant="ghost"
@@ -658,7 +658,7 @@ function Index() {
 
 								<MeasurementChart
 									measurements={originalResult}
-									title="Original Measurement Outputs"
+									title="Simulated Measurement Outputs"
 									isEncrypted={false}
 								/>
 
