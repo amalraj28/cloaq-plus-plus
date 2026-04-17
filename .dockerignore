@@ -9,6 +9,8 @@ backend/__pycache__
 backend/.pytest_cache
 backend/*.pyc
 backend/error.log
+backend/.venv
+backend/venv
 *.md
 .claude
 .vscode
