@@ -466,7 +466,7 @@ function Index() {
 								<Button
 									onClick={() => fileInputRef.current?.click()}
 									variant="outline"
-									className="w-full py-8 border-quantum hover:bg-quantum/10"
+									className="w-full py-8 border-quantum hover:bg-quantum/10 hover:text-foreground"
 								>
 									<Upload className="w-6 h-6 mr-2" />
 									Upload QASM File
@@ -816,7 +816,7 @@ function Index() {
 											toast.info("Ready for new circuit");
 										}}
 										variant="outline"
-										className="flex-1 py-6 border-accent hover:bg-accent/10"
+										className="flex-1 py-6 border-accent hover:bg-accent/10 hover:text-foreground"
 									>
 										Start New Circuit
 									</Button>
