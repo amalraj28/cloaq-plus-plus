@@ -462,11 +462,11 @@ function Index() {
 									Upload QASM File
 								</Button>
 								{circuitInput && (
-									<div className="p-4 bg-input rounded-lg border border-quantum/30 max-h-64 overflow-y-auto">
+									<div className="p-4 bg-input rounded-lg border border-quantum/30 max-h-64 overflow-y-auto hide-scrollbar">
 										<p className="text-sm text-muted-foreground mb-2">
 											Loaded circuit:
 										</p>
-										<pre className="text-xs font-mono text-foreground overflow-x-auto whitespace-pre-wrap break-words">
+										<pre className="text-xs font-mono text-foreground whitespace-pre-wrap break-words">
 											{circuitInput}
 										</pre>
 									</div>
