@@ -369,25 +369,40 @@ function Index() {
 
 				{/* Step Indicators */}
 				<div className="max-w-4xl mx-auto mb-8">
-					<div className="flex items-center justify-center gap-4">
-						{[1, 2, 3].map((step) => (
-							<div key={step} className="flex items-center">
-								<div
-									className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all ${
-										currentStep >= step
-											? "border-quantum bg-quantum/20 text-quantum glow-quantum"
-											: "border-muted text-muted-foreground"
-									}`}
-								>
-									{currentStep > step ? (
-										<CheckCircle2 className="w-6 h-6" />
-									) : (
-										<span className="font-bold">{step}</span>
-									)}
+					<div className="flex items-start justify-center gap-3 sm:gap-4">
+						{[
+							{ step: 1, label: "Input" },
+							{ step: 2, label: "Encrypt" },
+							{ step: 3, label: "Decrypt" },
+						].map(({ step, label }) => (
+							<div key={step} className="flex items-start">
+								<div className="flex w-16 sm:w-20 flex-col items-center gap-3 text-center">
+									<div
+										className={`flex items-center justify-center w-12 h-12 rounded-full border-2 transition-all ${
+											currentStep >= step
+												? "border-quantum bg-quantum/20 text-quantum glow-quantum"
+												: "border-muted text-muted-foreground"
+										}`}
+									>
+										{currentStep > step ? (
+											<CheckCircle2 className="w-6 h-6" />
+										) : (
+											<span className="font-bold">{step}</span>
+										)}
+									</div>
+									<span
+										className={`text-sm font-medium ${
+											currentStep >= step
+												? "text-quantum"
+												: "text-muted-foreground"
+										}`}
+									>
+										{label}
+									</span>
 								</div>
 								{step < 3 && (
 									<ArrowDown
-										className={`w-8 h-8 mx-4 rotate-[-90deg] transition-colors ${
+										className={`mt-2 w-7 h-7 sm:w-8 sm:h-8 mx-2 sm:mx-4 rotate-[-90deg] transition-colors ${
 											currentStep > step
 												? "text-quantum"
 												: "text-muted-foreground"
@@ -396,29 +411,6 @@ function Index() {
 								)}
 							</div>
 						))}
-					</div>
-					<div className="flex justify-center gap-24 mt-4">
-						<span
-							className={`text-sm font-medium ${
-								currentStep >= 1 ? "text-quantum" : "text-muted-foreground"
-							}`}
-						>
-							Input
-						</span>
-						<span
-							className={`text-sm font-medium ${
-								currentStep >= 2 ? "text-quantum" : "text-muted-foreground"
-							}`}
-						>
-							Encrypt
-						</span>
-						<span
-							className={`text-sm font-medium ${
-								currentStep >= 3 ? "text-quantum" : "text-muted-foreground"
-							}`}
-						>
-							Decrypt
-						</span>
 					</div>
 				</div>
 
@@ -600,7 +592,7 @@ function Index() {
 										showCircuitImage(originalImageURL, "Original Circuit")
 									}
 									variant="outline"
-									className="py-6 border-quantum hover:bg-quantum/10 hover:text-foreground"
+									className="w-full min-w-0 h-auto min-h-14 whitespace-normal px-4 py-4 text-center leading-snug border-quantum hover:bg-quantum/10 hover:text-foreground"
 								>
 									<ImageIcon className="w-5 h-5 mr-2" />
 									View Original Circuit
@@ -610,7 +602,7 @@ function Index() {
 										showCircuitImage(encryptedImageURL, "Encrypted Circuit")
 									}
 									variant="outline"
-									className="py-6 border-quantum hover:bg-quantum/10 hover:text-foreground"
+									className="w-full min-w-0 h-auto min-h-14 whitespace-normal px-4 py-4 text-center leading-snug border-quantum hover:bg-quantum/10 hover:text-foreground"
 								>
 									<ImageIcon className="w-5 h-5 mr-2" />
 									View Encrypted Circuit
@@ -649,7 +641,7 @@ function Index() {
 										}
 									}}
 									variant="outline"
-									className="py-6 border-quantum hover:bg-quantum/10 hover:text-foreground md:col-span-2 lg:col-span-1"
+									className="w-full min-w-0 h-auto min-h-14 whitespace-normal px-4 py-4 text-center leading-snug border-quantum hover:bg-quantum/10 hover:text-foreground md:col-span-2 lg:col-span-1"
 								>
 									<Download className="w-5 h-5 mr-2" />
 									Download Encrypted Circuit
@@ -676,7 +668,7 @@ function Index() {
 										)
 									}
 									disabled={isDecrypting}
-									className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold py-8 text-xl glow-quantum-strong transition-all"
+									className="w-full min-w-0 h-auto min-h-16 whitespace-normal px-4 py-5 text-center leading-snug bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-xl glow-quantum-strong transition-all"
 								>
 									{isDecrypting ? (
 										<>
