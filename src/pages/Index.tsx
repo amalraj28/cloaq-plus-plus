@@ -420,9 +420,7 @@ function Index() {
 					<Card className="p-8 bg-quantum-surface/50 backdrop-blur-sm border-quantum glow-quantum space-y-6 animate-slide-up">
 						<div className="flex items-center justify-between">
 							<div className="flex items-center gap-3">
-								<div className="w-10 h-10 rounded-full bg-quantum/20 flex items-center justify-center">
-									<Zap className="w-6 h-6 text-quantum" />
-								</div>
+								<Zap className="w-6 h-6 text-quantum shrink-0" />
 								<h2 className="text-3xl font-bold text-foreground">
 									Step 1: Input Circuit
 								</h2>
@@ -443,7 +441,7 @@ function Index() {
 									placeholder="Enter your QASM quantum circuit (e.g., OPENQASM 2.0; include qelib1.inc; qreg q[2]; h q[0]; cx q[0],q[1];)"
 									value={circuitInput}
 									onChange={(e) => setCircuitInput(e.target.value)}
-									className="min-h-[150px] bg-input border-quantum/50 focus:border-quantum focus:glow-quantum text-foreground font-mono resize-none w-full"
+									className="min-h-[150px] bg-input border-quantum/50 focus:border-quantum focus:glow-quantum text-foreground font-mono resize-none w-full hide-scrollbar overflow-y-auto"
 								/>
 							</TabsContent>
 
@@ -504,9 +502,7 @@ function Index() {
 
 							<Card className="p-8 bg-quantum-surface/50 backdrop-blur-sm border-quantum glow-quantum space-y-6">
 								<div className="flex items-center gap-3">
-									<div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-										<Lock className="w-6 h-6 text-primary" />
-									</div>
+									<Lock className="w-6 h-6 text-primary shrink-0" />
 									<h2 className="text-3xl font-bold text-foreground">
 										Step 2: Encryption Results
 									</h2>
@@ -695,9 +691,7 @@ function Index() {
 
 							<Card className="p-8 bg-accent/10 backdrop-blur-sm border-accent glow-quantum space-y-6">
 								<div className="flex items-center gap-3">
-									<div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-										<Unlock className="w-6 h-6 text-accent" />
-									</div>
+									<Unlock className="w-6 h-6 text-accent shrink-0" />
 									<h2 className="text-3xl font-bold text-foreground">
 										Step 3: Decryption Complete
 									</h2>
